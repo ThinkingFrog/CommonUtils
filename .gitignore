@@ -1,0 +1,8 @@
+build/
+.vscode/
+.vs/
+Debug/
+Release/
+Makefile
+*.user
+packages/
