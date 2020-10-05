@@ -12,7 +12,7 @@ public class ConfigHandler {
         try (FileReader reader = new FileReader(filename);
             Scanner scanner = new Scanner(reader);) {
             while (scanner.hasNextLine()) {
-                String line[] = scanner.nextLine().split(" ");
+                String line[] = scanner.nextLine().split(ConfigSyntax.delimeter);
                 ProcLine(line);
             }
         }
@@ -23,20 +23,24 @@ public class ConfigHandler {
 
     private void ProcLine(String[] line) {
 
-        if (!line[1].equals(ConfigSyntax.delimeter))
+        if (line.length != 2)
             Errors.WrongConfigDelimeter.PrintError();
-        if (line.length != 3)
-            Errors.WrongConfigFormat.PrintError();
+        
+        for (int i = 0; i < line.length; ++i)
+            line[i] = line[i].strip();
         
         switch (ConfigSyntax.valueOf(line[0])) {
             case INPUT_FILE_NAME:
-                input_file = line[2];
+                input_file = line[1];
             break;
             case ZIP_FILE_NAME:
-                zip_file = line[2];
+                zip_file = line[1];
             break;
             case OUTPUT_FILE_NAME:
-                output_file = line[2];
+                output_file = line[1];
+            break;
+            default:
+                Errors.WrongConfigFormat.PrintError();
             break;
         }
     }
