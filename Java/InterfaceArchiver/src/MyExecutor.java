@@ -1,16 +1,11 @@
-import java.io.FileInputStream;
 import ru.spbstu.pipeline.*;
 
-public class MyReader implements IReader {
+public class MyExecutor implements IExecutor{
+
     private IExecutable consumer;
     private IExecutable producer;
     private FileInputStream file;
     private ConfigHandler config;
-
-	public RC setInputStream(FileInputStream fis) {
-        file = new FileInputStream(fis);
-        return RC.CODE_SUCCESS;
-    }
 
     public RC setConsumer(IExecutable c) {
         consumer = new IExecutable(c);
@@ -18,7 +13,7 @@ public class MyReader implements IReader {
     }
 
     public RC setProducer(IExecutable p) {
-        System.out.println("I'm useless");
+        producer = new IExecutable(p);
         return RC.CODE_SUCCESS;
     }
     

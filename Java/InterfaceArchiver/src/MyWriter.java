@@ -1,7 +1,7 @@
 import java.io.FileInputStream;
 import ru.spbstu.pipeline.*;
 
-public class MyReader implements IReader {
+public class MyWriter implements IWriter {
     private IExecutable consumer;
     private IExecutable producer;
     private FileInputStream file;

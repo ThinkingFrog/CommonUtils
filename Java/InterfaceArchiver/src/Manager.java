@@ -1,7 +1,6 @@
 import ru.spbstu.pipeline.IReader;
 import ru.spbstu.pipeline.IExecutor;
 import ru.spbstu.pipeline.IWriter;
-import MyReader;
 
 public class Manager {
     private IReader reader;
@@ -16,7 +15,7 @@ public class Manager {
 
     // Шаблон
     // Надо получать кодиков из каждого метода, чтобы проверить, что нигде не возникло ошибок
-    public RunCoding() {
+    public void RunCoding() {
         manager.parse_config();
 
         reader.setConfig(cfg1);
