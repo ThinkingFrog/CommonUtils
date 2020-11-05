@@ -8,9 +8,9 @@ public class Manager {
     private IWriter writer;
 
     public Manager() {
-        reader = new IReader();
-        writer = new IWriter();
-        executor = new IExecutor();
+        reader = new MyReader();
+        writer = new MyWriter();
+        executor = new MyExecutor();
     }
 
     // Шаблон

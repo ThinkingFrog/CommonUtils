@@ -8,17 +8,17 @@ public class MyReader implements IReader {
     private ConfigHandler config;
 
 	public RC setInputStream(FileInputStream fis) {
-        file = new FileInputStream(fis);
+        file = fis;
         return RC.CODE_SUCCESS;
     }
 
     public RC setConsumer(IExecutable c) {
-        consumer = new IExecutable(c);
+        consumer = c;
         return RC.CODE_SUCCESS;
     }
 
     public RC setProducer(IExecutable p) {
-        System.out.println("I'm useless");
+        producer = p;
         return RC.CODE_SUCCESS;
     }
     
