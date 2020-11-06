@@ -3,19 +3,15 @@ import ru.spbstu.pipeline.IExecutor;
 import ru.spbstu.pipeline.IWriter;
 
 public class Manager {
-    private IReader reader;
-    private IExecutor executor;
-    private IWriter writer;
-
-    public Manager() {
-        reader = new MyReader();
-        writer = new MyWriter();
-        executor = new MyExecutor();
-    }
+    private IReader reader = new MyReader();
+    private IExecutor executor = new MyExecutor();
+    private IWriter writer = new MyWriter();
+    
+    private MyLogger logger = new MyLogger();
 
     // Шаблон
-    // Надо получать кодиков из каждого метода, чтобы проверить, что нигде не возникло ошибок
-    public void RunCoding() {
+    // Надо получать коды из каждого метода, чтобы проверить, что нигде не возникло ошибок
+    public static void main(String[] args) {
         manager.parse_config();
 
         reader.setConfig(cfg1);
