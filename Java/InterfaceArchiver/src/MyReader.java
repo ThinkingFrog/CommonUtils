@@ -5,7 +5,7 @@ public class MyReader implements IReader {
     private IExecutable consumer;
     private IExecutable producer;
     private FileInputStream file;
-    private ConfigHandler config;
+    private ReaderParser parser;
 
 	public RC setInputStream(FileInputStream fis) {
         file = fis;
@@ -23,11 +23,13 @@ public class MyReader implements IReader {
     }
     
     public RC execute(byte [] data) {
+        
         return RC.CODE_SUCCESS;
     }
 
-    public RC setConfig(String cfg) {
-        config = new ConfigHandler(cfg);
+    public RC setConfig(String filename) {
+        parser = new ReaderParser();
+        parser.Parse(filename);
         return RC.CODE_SUCCESS;
     }
 }

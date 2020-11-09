@@ -3,7 +3,7 @@ import ru.spbstu.pipeline.*;
 public class MyExecutor implements IExecutor{
     private IExecutable consumer;
     private IExecutable producer;
-    private ConfigHandler config;
+    private ExecutorParser parser;
 
     public RC setConsumer(IExecutable c) {
         consumer = c;
@@ -19,8 +19,9 @@ public class MyExecutor implements IExecutor{
         return RC.CODE_SUCCESS;
     }
 
-    public RC setConfig(String cfg) {
-        config = new ConfigHandler(cfg);
+    public RC setConfig(String filename) {
+        parser = new ExecutorParser();
+        parser.Parse(filename);
         return RC.CODE_SUCCESS;
     }
 }

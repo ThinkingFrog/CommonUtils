@@ -5,12 +5,11 @@ import java.util.HashMap;
 import ru.spbstu.pipeline.RC;
 import ru.spbstu.pipeline.BaseGrammar;
 
-public class MyParser {
-    private BaseGrammar grammar;
-    private HashMap<String, String> dict;
+public abstract class BaseParser {
+    protected BaseGrammar grammar;
+    protected HashMap<String, String> dict;
 
-    public MyParser(BaseGrammar curGrammar) {
-        grammar = curGrammar;
+    protected BaseParser() {
         dict = new HashMap<>();
     }
 

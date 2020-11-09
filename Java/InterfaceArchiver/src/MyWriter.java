@@ -5,7 +5,7 @@ public class MyWriter implements IWriter {
     private IExecutable consumer;
     private IExecutable producer;
     private FileOutputStream file;
-    private ConfigHandler config;
+    private WriterParser parser;
 
 	public RC setOutputStream(FileOutputStream fos) {
         file = fos;
@@ -26,8 +26,9 @@ public class MyWriter implements IWriter {
         return RC.CODE_SUCCESS;
     }
 
-    public RC setConfig(String cfg) {
-        config = new ConfigHandler(cfg);
+    public RC setConfig(String filename) {
+        parser = new WriterParser();
+        parser.Parse(filename);
         return RC.CODE_SUCCESS;
     }
 }
