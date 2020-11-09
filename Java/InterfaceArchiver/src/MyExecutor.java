@@ -16,6 +16,15 @@ public class MyExecutor implements IExecutor{
     }
     
     public RC execute(byte [] data) {
+        if (parser.isEncodeMode()) {
+
+        }
+        else if (parser.isDecodeMode()) {
+
+        }
+        else
+            return RC.CODE_CONFIG_GRAMMAR_ERROR;
+            
         return RC.CODE_SUCCESS;
     }
 

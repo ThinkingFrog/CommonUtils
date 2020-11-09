@@ -1,6 +1,6 @@
 public class ManagerParser extends BaseParser {
     private String input_file_token = "INPUT_FILE";
-    private String output_file_token = "DECODED_FILE";
+    private String output_file_token = "OUTPUT_FILE";
     private String reader_conf_token = "READER_CONFIG";
     private String writer_conf_token = "WRITER_CONFIG";
     private String executor_conf_token = "EXECUTOR_CONFIG";

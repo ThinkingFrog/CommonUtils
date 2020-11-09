@@ -1,3 +1,5 @@
-INPUT_FILE_NAME = text.txt
-ZIP_FILE_NAME = zip.txt
-OUTPUT_FILE_NAME = out.txt
+INPUT_FILE = text.txt
+OUTPUT_FILE = out.txt
+READER_CONFIG = rdconf.txt
+WRITER_CONFIG = wrconf.txt
+EXECUTOR_CONFIG = exconf.txt

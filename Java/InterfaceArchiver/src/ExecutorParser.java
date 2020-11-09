@@ -1,5 +1,7 @@
 public class ExecutorParser extends BaseParser {
     private String mode_token = "MODE";
+    private String encode_mode_token = "Encode";
+    private String decode_mode_token = "Decode";
     
     public ExecutorParser() {
         super();
@@ -7,7 +9,11 @@ public class ExecutorParser extends BaseParser {
         grammar = new ExtendedGrammar(gram_tokens);
     }
 
-    public String getMode() {
-        return dict.get(mode_token);
+    public boolean isEncodeMode() {
+        return dict.get(mode_token).equals(encode_mode_token);
+    }
+
+    public boolean isDecodeMode() {
+        return dict.get(mode_token).equals(decode_mode_token);
     }
 }

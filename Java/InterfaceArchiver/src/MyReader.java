@@ -1,10 +1,13 @@
 import java.io.FileInputStream;
+import java.io.IOException;
+
 import ru.spbstu.pipeline.*;
 
 public class MyReader implements IReader {
     private IExecutable consumer;
     private IExecutable producer;
     private FileInputStream file;
+    private byte[] buffer;
     private ReaderParser parser;
 
 	public RC setInputStream(FileInputStream fis) {
@@ -23,7 +26,25 @@ public class MyReader implements IReader {
     }
     
     public RC execute(byte [] data) {
+        long file_size;
+        try {
+            file_size = file.getChannel().size();
+        }
+        catch (IOException exc) {
+            return RC.CODE_FAILED_TO_READ;
+        }
+
+        byte[] buffer = new byte[(int)file_size];
         
+        try {
+            while(file.read(buffer) != -1);
+        }
+        catch(IOException exc) {
+            return RC.CODE_FAILED_TO_READ;
+        }
+
+        consumer.execute(buffer);
+
         return RC.CODE_SUCCESS;
     }
 
