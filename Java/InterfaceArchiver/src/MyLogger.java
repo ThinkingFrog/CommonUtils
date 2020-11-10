@@ -20,7 +20,7 @@ public class MyLogger {
         err_logs.put(RC.CODE_FAILED_PIPELINE_CONSTRUCTION, "Can't initialize pipeline");
     }
 
-    public void log(RC code, Level lvl) {
+    public void log(Level lvl, RC code) {
         logger.log(lvl, err_logs.get(code));
     }
 }
