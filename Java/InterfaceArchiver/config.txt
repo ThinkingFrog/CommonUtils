@@ -1,5 +1,0 @@
-INPUT_FILE = text.txt
-OUTPUT_FILE = out.txt
-READER_CONFIG = rdconf.txt
-WRITER_CONFIG = wrconf.txt
-EXECUTOR_CONFIG = exconf.txt
