@@ -8,7 +8,7 @@
 При запуске файла автоматически проводятся все тесты
 
 ListNode:
-    Содержит значение и ссылку на следующий жлемент
+    Содержит значение и ссылку на следующий элемент
 
 merge(l1: ListNode, l2: ListNode):
     Объединяет два сортированных списка в один сортированный
@@ -37,18 +37,15 @@ list_is_sorted(l: ListNode):
     Последовательно проверяет, что значение текущего узла не превосходит значение следующего узла
 '''
 
-import random
-import unittest
+from list.list_node import ListNode
 
-class ListNode:
-    def __init__(self, value):
-        self.value = value
-        self.next = None
+import random
+
 
 def merge(l1: ListNode, l2: ListNode):
-    if l1 is None:
+    if not l1 or l1 is None:
         return l2
-    if l2 is None:
+    if not l2 or l2 is None:
         return l1
 
     main_list = l1 if l1.value < l2.value else l2
@@ -76,7 +73,7 @@ def merge(l1: ListNode, l2: ListNode):
     return head
 
 
-def create_rand_sorted_list(n: int):
+def create_rand_sorted_list(n: int) -> ListNode:
     node = ListNode(random.randint(0, 10))
     head = node
     for i in range(n - 1):
@@ -85,14 +82,14 @@ def create_rand_sorted_list(n: int):
     return head
 
 
-def print_list(l: ListNode):
+def print_list(l: ListNode) -> None:
     while l:
         print(l.value)
         l = l.next
 
 
-def list_is_sorted(l: ListNode):
-    if l is None:
+def list_is_sorted(l: ListNode) -> bool:
+    if not l or l is None:
         return True
 
     while l.next:
@@ -100,129 +97,3 @@ def list_is_sorted(l: ListNode):
             return False
         l = l.next
     return True
-
-#-----------------------------------------------------------------------------------------------------------------------
-#Tests
-
-
-class TestListIsSortedMethod(unittest.TestCase):
-
-    def test_one_element(self):
-        l1 = ListNode(1)
-        self.assertTrue(list_is_sorted(l1))
-
-    def test_multiple_elements(self):
-        l1 = ListNode(2)
-        l1.next = ListNode(5)
-        l1.next.next = ListNode(10000)
-        self.assertTrue(list_is_sorted(l1))
-        l1.next.next.next = ListNode(6)
-        self.assertFalse(list_is_sorted(l1))
-
-
-class TestRandomListCreation(unittest.TestCase):
-
-    def test_five_elements(self):
-        self.assertTrue(list_is_sorted(create_rand_sorted_list(5)))
-
-    def test_fifty_elements(self):
-        self.assertTrue(list_is_sorted(create_rand_sorted_list(50)))
-
-    def test_five_hundred_elements(self):
-        self.assertTrue(list_is_sorted(create_rand_sorted_list(500)))
-
-    def test_five_thousand_elements(self):
-        self.assertTrue(list_is_sorted(create_rand_sorted_list(5000)))
-
-class TestMergeMethod(unittest.TestCase):
-
-    def test_simple_example(self):
-        l1 = ListNode(1)
-        l1.next = ListNode(2)
-        l1.next.next = ListNode(4)
-
-        l2 = ListNode(1)
-        l2.next = ListNode(3)
-        l2.next.next = ListNode(4)
-
-        l3 = merge(l1, l2)
-        self.assertTrue(list_is_sorted(l3))
-
-    def test_one_empty_list(self):
-        l1 = create_rand_sorted_list(10)
-        l2 = create_rand_sorted_list(10)
-
-        l3 = merge(l1, None)
-        self.assertTrue(list_is_sorted(l3))
-        l4 = merge(None, l2)
-        self.assertTrue(list_is_sorted(l4))
-
-
-    def test_equal_small_lists(self):
-        l1 = create_rand_sorted_list(10)
-        l2 = create_rand_sorted_list(10)
-
-        self.assertTrue(list_is_sorted(l1))
-        self.assertTrue(list_is_sorted(l2))
-
-        l3 = merge(l1, l2)
-        self.assertTrue(list_is_sorted(l3))
-
-    def test_equal_medium_lists(self):
-        l1 = create_rand_sorted_list(1000)
-        l2 = create_rand_sorted_list(1000)
-
-        self.assertTrue(list_is_sorted(l1))
-        self.assertTrue(list_is_sorted(l2))
-
-        l3 = merge(l1, l2)
-        self.assertTrue(list_is_sorted(l3))
-
-    def test_equal_big_lists(self):
-        l1 = create_rand_sorted_list(100000)
-        l2 = create_rand_sorted_list(100000)
-
-        self.assertTrue(list_is_sorted(l1))
-        self.assertTrue(list_is_sorted(l2))
-
-        l3 = merge(l1, l2)
-        self.assertTrue(list_is_sorted(l3))
-
-    def test_first_list_smaller(self):
-        l1 = ListNode(5)
-        l1.next = ListNode(10)
-
-        l2 = ListNode(100)
-        l2.next = ListNode(150)
-        l2.next.next = ListNode(200)
-
-        l3 = merge(l1, l2)
-        self.assertTrue(list_is_sorted(l3))
-
-    def test_first_list_bigger(self):
-        l1 = ListNode(5)
-        l1.next = ListNode(10)
-        l1.next.next = ListNode(200)
-
-        l2 = ListNode(100)
-        l2.next = ListNode(150)
-
-        l3 = merge(l1, l2)
-        self.assertTrue(list_is_sorted(l3))
-
-    def test_random_lists(self):
-        size1 = random.randint(1, 100000)
-        size2 = random.randint(1, 100000)
-
-        l1 = create_rand_sorted_list(size1)
-        l2 = create_rand_sorted_list(size2)
-
-        self.assertTrue(list_is_sorted(l1))
-        self.assertTrue(list_is_sorted(l2))
-
-        l3 = merge(l1, l2)
-        self.assertTrue(list_is_sorted(l3))
-
-
-if __name__ == '__main__':
-    unittest.main()
