@@ -1,8 +1,34 @@
+# VSCode
 build/
 .vscode/
+
+# Visual Studio
 .vs/
 Debug/
 Release/
+
+# Cmake
 Makefile
 *.user
 packages/
+
+# Python
+__pycache__/
+
+# Qt
+build*/
+
+# CodeBlocks
+bin/
+obj/
+*.depend
+*.layout
+
+# Intellij IDEA
+out/
+.idea/
+*.iml
+
+# Rust Cargo
+target/
+Cargo.lock
