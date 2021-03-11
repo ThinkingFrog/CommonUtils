@@ -1,0 +1,8 @@
+INPUT_FILE = text.txt
+OUTPUT_FILE = decoded.txt
+READER = MyReader
+READER_CONFIG = configs/cfg1/rdconf.txt
+WRITER = MyWriter
+WRITER_CONFIG = configs/cfg1/wrconf.txt
+EXECUTORS = MyEncoder, MyDecoder
+EXECUTORS_CONFIGS = (MyEncoder, configs/cfg1/exconf.txt), (MyDecoder, configs/cfg1/exconf.txt)
