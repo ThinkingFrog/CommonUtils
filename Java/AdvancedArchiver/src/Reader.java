@@ -3,14 +3,14 @@ import java.io.IOException;
 
 import ru.spbstu.pipeline.*;
 
-public class MyReader implements IReader {
+public class Reader implements IReader {
     private IExecutable consumer;
     private final ReaderParser parser;
 
     private FileInputStream file;
     private int blockSize;
 
-    public MyReader() {
+    public Reader() {
         parser = new ReaderParser();
     }
 

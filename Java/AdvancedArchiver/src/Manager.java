@@ -55,7 +55,6 @@ public class Manager {
             return RC.CODE_FAILED_PIPELINE_CONSTRUCTION;
         }
 
-
         err_code = reader.setConsumer(executors.get(0));
         if (err_code != RC.CODE_SUCCESS)
             return err_code;

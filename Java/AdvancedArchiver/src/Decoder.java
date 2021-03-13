@@ -2,12 +2,12 @@ import ru.spbstu.pipeline.*;
 
 import java.util.ArrayList;
 
-public class MyDecoder implements IExecutor {
+public class Decoder implements IExecutor {
     private IExecutable consumer;
     int dictSize;
     int decodedSize;
 
-    public MyDecoder() {
+    public Decoder() {
         dictSize = 0;
         decodedSize = 0;
     }

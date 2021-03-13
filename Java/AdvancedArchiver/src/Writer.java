@@ -3,13 +3,13 @@ import java.io.IOException;
 
 import ru.spbstu.pipeline.*;
 
-public class MyWriter implements IWriter {
+public class Writer implements IWriter {
     private final WriterParser parser;
 
     private FileOutputStream file;
     private int blockSize;
 
-    public MyWriter() {
+    public Writer() {
         parser = new WriterParser();
     }
 

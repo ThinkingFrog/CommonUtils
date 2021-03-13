@@ -7,17 +7,17 @@ import java.util.logging.SimpleFormatter;
 
 import ru.spbstu.pipeline.RC;
 
-public class MyLogger {
-    private final Logger logger = Logger.getLogger(MyLogger.class.getName());
+public class CustomLogger {
+    private final Logger logger = Logger.getLogger(CustomLogger.class.getName());
     private RC err_code;
     private final HashMap<RC, String> err_logs = new HashMap<>();
 
-    public MyLogger() {
+    public CustomLogger() {
         InitErrLogs();
         err_code = RC.CODE_SUCCESS;
     }
 
-    public MyLogger(String filename) {
+    public CustomLogger(String filename) {
         InitErrLogs();
         try {
             FileHandler fh = new FileHandler(filename);

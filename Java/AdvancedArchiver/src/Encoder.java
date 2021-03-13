@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 import ru.spbstu.pipeline.*;
 
-public class MyEncoder implements IExecutor {
+public class Encoder implements IExecutor {
     private IExecutable consumer;
 
     @Override
