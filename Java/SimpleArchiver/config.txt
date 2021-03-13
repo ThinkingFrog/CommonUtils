@@ -1,3 +1,0 @@
-INPUT_FILE_NAME = text.txt
-ZIP_FILE_NAME = zip.txt
-OUTPUT_FILE_NAME = out.txt
