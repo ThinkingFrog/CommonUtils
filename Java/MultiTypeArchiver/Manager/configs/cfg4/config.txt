@@ -1,8 +1,0 @@
-INPUT_FILE = text.txt
-OUTPUT_FILE = decoded.txt
-READER = MyReader
-READER_CONFIG = configs/cfg4/rdconf.txt
-WRITER = MyWriter
-WRITER_CONFIG = configs/cfg4/wrconf.txt
-EXECUTORS = ru.main.Compression, ru.main.Decompression, MyEncoder, MyDecoder
-EXECUTORS_CONFIGS = (MyEncoder, configs/cfg4/exconf.txt), (MyDecoder, configs/cfg4/exconf.txt), (ru.main.Compression, configs/cfg4/ovechkin_conf.txt), (ru.main.Decompression, configs/cfg4/ovechkin_conf.txt)

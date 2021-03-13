@@ -6,9 +6,9 @@ public class Main {
     public static void main(String[] args) {
         RC err_code;
 
-        MyLogger logger = new MyLogger("output.log");
+        CustomLogger logger = new CustomLogger("output.log");
         if (logger.getErrCode() != RC.CODE_SUCCESS) {
-            MyLogger newLogger = new MyLogger();
+            CustomLogger newLogger = new CustomLogger();
             newLogger.log(Level.SEVERE, logger.getErrCode());
             return;
         }

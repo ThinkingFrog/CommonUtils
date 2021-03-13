@@ -1,4 +1,4 @@
-import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -6,40 +6,47 @@ import java.util.Arrays;
 
 import ru.spbstu.pipeline.*;
 
-public class MyReader implements IReader {
-    private IConsumer consumer;
-    private final ReaderParser parser;
+public class Writer implements IWriter {
+    private IProducer producer;
+    private final WriterParser parser;
+    private IMediator mediator;
 
-    private FileInputStream file;
+    private final TYPE[] inTypes = { TYPE.BYTE };
+    private final TYPE[] outTypes = { TYPE.BYTE, TYPE.CHAR, TYPE.SHORT };
+
+    private FileOutputStream file;
     private int blockSize;
     private byte[] data;
 
-    private final TYPE[] outTypes = { TYPE.BYTE, TYPE.CHAR, TYPE.SHORT };
-
-    public MyReader() {
-        parser = new ReaderParser();
+    public Writer() {
+        parser = new WriterParser();
     }
 
     @Override
-	public RC setInputStream(FileInputStream fis) {
-        if (fis == null)
+	public RC setOutputStream(FileOutputStream fos) {
+        if (fos == null)
             return RC.CODE_INVALID_ARGUMENT;
 
-        file = fis;
+        file = fos;
         return RC.CODE_SUCCESS;
     }
 
     @Override
     public RC setConsumer(IConsumer c) {
-        if (c == null)
-            return RC.CODE_INVALID_ARGUMENT;
-
-        consumer = c;
         return RC.CODE_SUCCESS;
     }
 
     @Override
     public RC setProducer(IProducer p) {
+        if (p == null)
+            return RC.CODE_INVALID_ARGUMENT;
+
+        producer = p;
+
+        TYPE intersectType = determineType();
+        if (intersectType != null)
+            mediator = producer.getMediator(intersectType);
+
         return RC.CODE_SUCCESS;
     }
 
@@ -53,35 +60,34 @@ public class MyReader implements IReader {
         if (err_code != RC.CODE_SUCCESS)
             return err_code;
 
-        blockSize = parser.getReadBlockSize();
+        blockSize = parser.getWriteBlockSize();
 
         return RC.CODE_SUCCESS;
     }
 
     @Override
     public RC execute() {
+        data = (byte[])mediator.getData();
+        if (data == null)
+            return RC.CODE_SUCCESS;
+
         try {
-            while (true) {
-                int bytesToEOF =  (int)(file.getChannel().size() - file.getChannel().position());
-                if (bytesToEOF == 0)
-                    break;
-
-                byte[] buffer = new byte[Math.min(blockSize, bytesToEOF)];
-                if (file.read(buffer) == -1)
-                    break;
-
-                data = buffer;
-                RC err_code = consumer.execute();
-
-                if (err_code != RC.CODE_SUCCESS)
-                    return err_code;
-            }
+            for (int start = 0; start < data.length; start += blockSize)
+                file.write(data, start, Math.min(blockSize, data.length - start));
         }
-        catch(IOException exc) {
-            return RC.CODE_FAILED_TO_READ;
+        catch (IOException exc) {
+            return RC.CODE_FAILED_TO_WRITE;
         }
 
         return RC.CODE_SUCCESS;
+    }
+
+    private TYPE determineType() {
+        TYPE[] ptypes = producer.getOutputTypes();
+        for (TYPE ptype : ptypes)
+            if (Arrays.asList(inTypes).contains(ptype))
+                return ptype;
+        return null;
     }
 
     private class MyMediator implements IMediator {

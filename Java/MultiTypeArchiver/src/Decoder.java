@@ -1,11 +1,11 @@
+import ru.spbstu.pipeline.*;
+
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import ru.spbstu.pipeline.*;
-
-public class MyEncoder implements IExecutor {
+public class Decoder implements IExecutor {
     private IConsumer consumer;
     private IProducer producer;
     private IMediator mediator;
@@ -14,6 +14,14 @@ public class MyEncoder implements IExecutor {
     private final TYPE[] outTypes = { TYPE.BYTE, TYPE.CHAR, TYPE.SHORT };
 
     private byte[] data;
+
+    int dictSize;
+    int decodedSize;
+
+    public Decoder() {
+        dictSize = 0;
+        decodedSize = 0;
+    }
 
     @Override
     public RC setConsumer(IConsumer c) {
@@ -49,60 +57,44 @@ public class MyEncoder implements IExecutor {
         if (data == null)
             return RC.CODE_SUCCESS;
 
-        ArrayList<Byte[]> dict = new ArrayList<>();
-        ArrayList<Byte> coded_buffer = new ArrayList<>();
+        ArrayList<Byte> dict = new ArrayList<>();
+        ArrayList<Byte> decoded = new ArrayList<>();
 
-        for (int i = 0; i < data.length; i += 2) {
-            // Create array of bytes currently being processed
-            Byte[] block;
-            if (data.length % 2 == 1 && i == data.length - 1)
-                block = new Byte[] {data[i], 0};
-            else
-                block = new Byte[] {data[i], data[i + 1]};
+        // data-iteration index
+        int idx = 0;
 
-            // Check if a pair is already coded in dictionary
-            // Returns -1 if pair doesn't already exist
-            // Returns pair index if it already exists
-            int code = BlockAlreadyExists(dict, block);
+        // If new coded block begins, start reading code dictionary
+        dictSize = data[idx++] * 2;
 
-            // If pair doesn't already exist, write it
-            if (code == -1) {
-                dict.add(block);
-                code = dict.size() - 1;
-            }
+        // Read and save dictionary to ArrayList
+        for (; dictSize > 0; --dictSize, ++idx)
+            dict.add(data[idx]);
 
-            // Write pair index in output buffer
-            coded_buffer.add((byte)code);
+        decodedSize = data[idx++];
+
+        // Read coded character
+        // Decode it using dictionary
+        // Write decoded character to output buffer
+        for (; decodedSize > 0; --decodedSize, ++idx) {
+            int code = data[idx];
+
+            decoded.add(dict.get(code * 2));
+            if (dict.get(code * 2 + 1) != 0)
+                decoded.add(dict.get(code * 2 + 1));
         }
 
-        // output buffer
-        ArrayList<Byte> out_buffer = new ArrayList<>();
-        // Add dictionary to output buffer
-        out_buffer.add((byte)dict.size());
-        for (Byte[] pair : dict)
-            for (Byte symb : pair)
-                out_buffer.add(symb);
+        // Pass decoded data to consumer
+         byte[] buffer = new byte[decoded.size()];
+         for (int i = 0; i < buffer.length; ++i)
+             buffer[i] = decoded.get(i);
 
-        // Add coded text to output buffer
-        out_buffer.add((byte)coded_buffer.size());
-        out_buffer.addAll(coded_buffer);
+         data = buffer;
 
-        // Convert ArrayList<Byte> to byte[]
-        byte [] out_data = new byte[out_buffer.size()];
-        for (int i = 0; i < out_buffer.size(); ++i)
-            out_data[i] = out_buffer.get(i);
+         RC err_code = consumer.execute();
+         if (err_code != RC.CODE_SUCCESS)
+             return err_code;
 
-        data = out_data;
-
-        return consumer.execute();
-    }
-
-    // Runs through dict and checks if any of its subarrays match given array
-    private int BlockAlreadyExists(ArrayList<Byte[]> dict, Byte[] block) {
-        for (int dict_i = 0; dict_i < dict.size(); ++dict_i)
-            if (dict.get(dict_i)[0] == block[0] && dict.get(dict_i)[1] == block[1])
-                return dict_i;
-        return -1;
+        return RC.CODE_SUCCESS;
     }
 
     private TYPE determineType() {
