@@ -76,7 +76,7 @@ def merge(l1: ListNode, l2: ListNode):
 def create_rand_sorted_list(n: int) -> ListNode:
     node = ListNode(random.randint(0, 10))
     head = node
-    for i in range(n - 1):
+    for _ in range(n - 1):
         node.next = ListNode(random.randint(node.value, node.value + 10))
         node = node.next
     return head
